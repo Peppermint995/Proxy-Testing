@@ -5,11 +5,27 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Proxy-Testing</title>
 <style>
-  body { font-family: Arial, sans-serif; padding: 20px; background: #000000; }
+  body { 
+    font-family: Arial, sans-serif; 
+    padding: 20px; 
+    /* Initial background */
+    background: #000000;
+    /* Apply animation */
+    animation: bgColorChange 30s infinite alternate;
+  }
+
+  @keyframes bgColorChange {
+    0% { background-color: #000000; }
+    25% { background-color: #1a1a2e; }
+    50% { background-color: #162447; }
+    75% { background-color: #1f4068; }
+    100% { background-color: #e43f5a; }
+  }
+
   input { width: 60%; padding: 8px; }
   select, button { padding: 8px 12px; margin-left: 5px; }
   iframe { width: 100%; height: 600px; border: 1px solid #ccc; margin-top: 20px; }
-  #status { margin-top: 10px; font-size: 90%; color: #555; }
+  #status { margin-top: 10px; font-size: 90%; color: #fff; }
 </style>
 </head>
 <body>
@@ -22,7 +38,7 @@
   <option value="https://api.codetabs.com/v1/proxy?quest=">CodeTabs</option>
   <option value="https://corsproxy.io/?">CorsProxy.io</option>
   <option value="https://go.x2u.in/proxy?">X2u.in</option>
-  <option value= "https://cors‑proxy.htmldriven.com/?">Html driven Cors</option>
+  <option value="https://cors‑proxy.htmldriven.com/?">Html driven Cors</option>
 </select>
 <button onclick="loadProxy()">Load</button>
 <div id="status"></div>
