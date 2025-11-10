@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proxy-Testing</title>
+<style>
+  body { font-family: Arial, sans-serif; padding: 20px; background: #f9f9f9; }
+  input { width: 60%; padding: 8px; }
+  select, button { padding: 8px 12px; margin-left: 5px; }
+  iframe { width: 100%; height: 600px; border: 1px solid #ccc; margin-top: 20px; }
+  #status { margin-top: 10px; font-size: 90%; color: #555; }
+</style>
+</head>
+<body>
+<h2>Multi-Proxy HTML Viewer</h2>
+<p>Enter a URL and select a proxy:</p>
+<input id="url" placeholder="https://example.com">
+<select id="proxySelect">
+  <option value="https://api.allorigins.win/raw?url=">AllOrigins</option>
+  <option value="https://thingproxy.freeboard.io/fetch/">ThingProxy</option>
+  <option value="https://api.codetabs.com/v1/proxy?quest=">CodeTabs</option>
+  <option value="https://corsproxy.io/?">CorsProxy.io</option>
+</select>
+<button onclick="loadProxy()">Load</button>
+<div id="status"></div>
+<iframe id="frame"></iframe>
+
+<script>
+function loadProxy() {
+  const url = document.getElementById('url').value.trim();
+  const proxy = document.getElementById('proxySelect').value;
+  const status = document.getElementById('status');
+  const frame = document.getElementById('frame');
+
+  if(!url) return alert('Please enter a URL');
+  status.textContent = 'Loading via proxy...';
+
+  // Encode URL for safety
+  let fullUrl = proxy + encodeURIComponent(url);
+
+  // Attempt to load
+  frame.src = fullUrl;
+
+  // Show fallback after 5 seconds if iframe is blank
+  setTimeout(() => {
+    if(frame.contentDocument && frame.contentDocument.body.innerHTML.trim() === '') {
+      status.textContent = 'Failed to load. Try a different proxy.';
+    } else {
+      status.textContent = 'Loaded successfully via selected proxy.';
+    }
+  }, 5000);
+}
+</script>
+</body>
+</html>
