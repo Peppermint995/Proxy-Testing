@@ -1,27 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Proxy Testing For My Freind Alex</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Proxy Testing For My Friend Alex</title>
 <style>
   :root{
     --fg: #ffffff;
-    --muted: rgba(255,255,255,0.8);
-    --card-bg: rgba(0,0,0,0.25);
+    --muted: rgba(255,255,255,0.85);
+    --card-bg: rgba(0,0,0,0.18);
   }
-
-  html,body {
-    height: 100%;
-    margin: 0;
-  }
-
-  /* rainbow animated background using CSS gradients */
-  body {
-    font-family: Arial, sans-serif;
-    color: var(--fg);
-    padding: 28px;
-    /* make a large multi-stop gradient and animate its position */
+  html,body{height:100%;margin:0}
+  body{
+    font-family: Arial, Helvetica, sans-serif;
+    color:var(--fg);
+    padding:24px;
     background: linear-gradient(120deg,
       #ff004d 0%,
       #ff7300 12.5%,
@@ -32,218 +25,240 @@
       #6a00ff 75%,
       #ff00c8 87.5%,
       #ff004d 100%);
-    background-size: 200% 200%;
-    animation: rainbowShift 40s linear infinite;
+    background-size: 240% 240%;
+    animation: rainbowShift 36s linear infinite;
+    display:flex;
+    align-items:flex-start;
+    justify-content:center;
+  }
+  @keyframes rainbowShift{
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
   }
 
-  @keyframes rainbowShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-  }
-
-  /* page card */
-  .card {
-    background: var(--card-bg);
-    padding: 18px;
-    border-radius: 12px;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.35);
-    max-width: 1100px;
-    margin: 0 auto;
+  .card{
+    width:100%;
+    max-width:1120px;
+    background:var(--card-bg);
+    border-radius:12px;
+    padding:18px;
+    box-shadow:0 8px 30px rgba(0,0,0,0.35);
     backdrop-filter: blur(6px);
   }
 
-  h2 { margin: 0 0 8px 0; font-size: 1.4rem; }
-  p { margin: 6px 0 16px 0; color: var(--muted); }
-
-  .controls {
+  header {
     display:flex;
-    flex-wrap:wrap;
+    align-items:center;
+    gap:12px;
+    justify-content:space-between;
+  }
+  h2{margin:0;font-size:1.3rem}
+  .controls{
+    margin-top:12px;
+    display:flex;
     gap:8px;
     align-items:center;
+    flex-wrap:wrap;
   }
-
-  input#url { flex:1 1 60%; min-width:240px; padding:8px 10px; border-radius:6px; border:1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.02); color:var(--fg); }
-  select, button {
-    padding:8px 12px;
-    border-radius:6px;
+  input#url{
+    flex:1 1 60%;
+    padding:10px;
+    border-radius:8px;
     border:1px solid rgba(255,255,255,0.12);
-    background: rgba(255,255,255,0.04);
+    background: rgba(255,255,255,0.02);
+    color:var(--fg);
+    min-width:220px;
+  }
+  select, button{
+    padding:9px 12px;
+    border-radius:8px;
+    border:1px solid rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.03);
     color:var(--fg);
     cursor:pointer;
   }
-
-  button:active { transform: translateY(1px); }
-  button.secondary { background: transparent; border:1px dashed rgba(255,255,255,0.12); }
-
-  #status { margin-top:12px; font-size:0.95rem; color:var(--muted); min-height:1.2em; }
-
-  iframe {
-    width: 100%;
-    height: 620px;
-    border-radius:8px;
-    border: 1px solid rgba(255,255,255,0.12);
-    margin-top: 16px;
-    background: white;
+  button.secondary{ background: transparent; border:1px dashed rgba(255,255,255,0.12) }
+  .side-actions{
+    display:flex;
+    gap:8px;
+    align-items:center;
   }
-
-  footer { margin-top:12px; font-size:0.85rem; color:var(--muted); text-align:right; }
-
-  @media (max-width:700px){
-    input#url { flex-basis:100%; }
-    .controls { gap:6px; }
+  #status{ margin-top:12px; color:var(--muted); min-height:1.2em }
+  iframe{
+    width:100%;
+    height:640px;
+    margin-top:16px;
+    border-radius:8px;
+    border:1px solid rgba(255,255,255,0.12);
+    background:white;
+  }
+  footer{ margin-top:10px; text-align:right; color:var(--muted); font-size:0.9rem }
+  @media(max-width:720px){
+    .controls{flex-direction:column;align-items:stretch}
+    .side-actions{justify-content:space-between}
+    iframe{height:520px}
   }
 </style>
 </head>
 <body>
-  <div class="card">
-    <h2>Proxy Testing For My Freind Alex</h2>
-    <p>Enter any URL and choose a proxy. Use these for development/testing only — public proxies are flaky and may log requests.</p>
+  <div class="card" role="main">
+    <header>
+      <div>
+        <h2>Proxy Testing For My Friend Alex</h2>
+        <div style="color:var(--muted);font-size:0.95rem">Enter a URL and pick a proxy (dev/testing only).</div>
+      </div>
+      <div class="side-actions">
+        <!-- side button that navigates to the site you requested -->
+        <button id="seesawBtn" title="Open Seasaw (new tab)">Open Seasaw</button>
+      </div>
+    </header>
 
-    <div class="controls">
+    <div class="controls" style="margin-top:12px;">
       <input id="url" placeholder="https://example.com" spellcheck="false" autocapitalize="none" />
       <select id="proxySelect" title="Select proxy"></select>
       <button id="loadBtn">Load</button>
       <button id="nextBtn" class="secondary" title="Try next proxy">Try next proxy</button>
-      <button id="openBtn" class="secondary" title="Open raw target in new tab (no proxy)">Open target</button>
+      <button id="openBtn" class="secondary" title="Open target (no proxy)">Open target</button>
     </div>
 
-    <div id="status">Ready.</div>
+    <div id="status">Ready. Tip: press Enter to load.</div>
 
     <iframe id="frame" sandbox="allow-scripts allow-forms allow-same-origin"></iframe>
 
-    <footer>Public proxies: test only • If a proxy fails, click <em>Try next proxy</em>.</footer>
+    <footer>Public proxies are for testing only — they may be rate-limited or log traffic.</footer>
   </div>
 
 <script>
-/*
-  Proxy list: each entry is {name, url, type}
-  type === 'encode' => proxy expects encoded URL appended (eg ?url=ENCODED)
-  type === 'prefix' => proxy is a simple prefix that should be followed by the raw URL (no double-encoding)
-  Note: Availability changes — these are common dev proxies.
-*/
+/* ------------------------
+   Proxies (tested/dev)
+   - type: 'encode' => append encoded URL
+   - type: 'prefix' => append raw URL
+   These are known public dev proxies; availability may change.
+   Sources used to build this list: AllOrigins, CORS.lol, CodeTabs, CorsProxy.io, Corsfix, ThingProxy, bridged.cc, CORS-Anywhere docs. 
+   ------------------------ */
 const proxies = [
   { name: 'AllOrigins (raw)', url: 'https://api.allorigins.win/raw?url=', type: 'encode' },
   { name: 'CORS.lol', url: 'https://api.cors.lol/?url=', type: 'encode' },
   { name: 'CodeTabs (quest)', url: 'https://api.codetabs.com/v1/proxy?quest=', type: 'encode' },
-  { name: 'CorsProxy.io', url: 'https://corsproxy.io/?', type: 'encode' },
-  { name: 'CorsFix', url: 'https://proxy.corsfix.com/?', type: 'encode' },
-  { name: 'ThingProxy', url: 'https://thingproxy.freeboard.io/fetch/', type: 'prefix' },
+  { name: 'CorsProxy.io', url: 'https://corsproxy.io/?url=', type: 'encode' },
+  { name: 'CorsFix (free)', url: 'https://proxy.corsfix.com/?url=', type: 'encode' },
+  { name: 'ThingProxy (Freeboard)', url: 'https://thingproxy.freeboard.io/fetch/', type: 'prefix' },
   { name: 'Bridged CORS (bridged.cc)', url: 'https://cors.bridged.cc/', type: 'prefix' },
-  { name: 'Textise (html-to-text demo)', url: 'https://textise dot iitty??', type: 'encode' }, // placeholder removed if you want to add real
-  // Additional entries that sometimes work:
-  { name: 'HTMLDriven CORS', url: 'https://cors-proxy.htmldriven.com/?url=', type: 'encode' },
-  { name: 'CORS Anywhere (demo)', url: 'https://cors-anywhere.herokuapp.com/', type: 'prefix' } // many demo instances require enabling
+  { name: 'CORS-Anywhere (demo)', url: 'https://cors-anywhere.herokuapp.com/', type: 'prefix' }
 ];
 
-// filter out entries that are clearly placeholders (we left a dummy above as an example); keep only valid-looking ones
-const validProxies = proxies.filter(p => p.url && !p.name.includes('placeholder'));
-
-// populate the select
+// populate proxy select
 const select = document.getElementById('proxySelect');
-validProxies.forEach((p, i) => {
+proxies.forEach((p, i) => {
   const opt = document.createElement('option');
   opt.value = i;
   opt.textContent = p.name;
   select.appendChild(opt);
 });
 
+// elements
+const urlInput = document.getElementById('url');
+const frame = document.getElementById('frame');
+const status = document.getElementById('status');
 let currentIndex = 0;
 select.selectedIndex = 0;
 
-const status = document.getElementById('status');
-const frame = document.getElementById('frame');
-const urlInput = document.getElementById('url');
-
-document.getElementById('loadBtn').addEventListener('click', loadProxy);
-document.getElementById('nextBtn').addEventListener('click', tryNextProxy);
-document.getElementById('openBtn').addEventListener('click', openTarget);
-
-function buildProxiedUrl(proxy, target) {
-  // proxy.type === 'encode' -> append encodeURIComponent(target)
-  // proxy.type === 'prefix' -> append raw target (but encode characters that break URL)
-  if (!target.match(/^https?:\/\//)) {
-    // ensure scheme
-    target = 'https://' + target;
-  }
-
-  if (proxy.type === 'encode') {
-    return proxy.url + encodeURIComponent(target);
-  } else {
-    // prefix type: we'll append the raw target but make sure it's not double-encoded
-    // replace spaces with %20 and keep rest intact
-    return proxy.url + target;
-  }
+// play click sound using WebAudio (no files)
+function playClick() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+    o.type = 'sine';
+    o.frequency.value = 1000;
+    g.gain.setValueAtTime(0.0001, ctx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.12, ctx.currentTime + 0.01);
+    g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.18);
+    o.connect(g); g.connect(ctx.destination);
+    o.start();
+    o.stop(ctx.currentTime + 0.19);
+  } catch(e) { /* ignore audio errors */ }
 }
 
-async function loadProxy() {
-  const url = urlInput.value.trim();
-  if (!url) {
-    alert('Please enter a URL (include https:// if possible).');
-    return;
-  }
+// build proxied URL properly for each proxy type
+function buildProxiedUrl(proxy, target) {
+  if (!/^https?:\/\//i.test(target)) target = 'https://' + target;
+  if (proxy.type === 'encode') return proxy.url + encodeURIComponent(target);
+  return proxy.url + target;
+}
 
+function setStatus(txt) {
+  status.textContent = txt;
+}
+
+// main load function
+function loadProxy() {
+  playClick();
+  const target = urlInput.value.trim();
+  if (!target) return alert('Please enter a URL (https://...)');
   currentIndex = parseInt(select.value, 10) || 0;
-  const proxy = validProxies[currentIndex];
-  const proxied = buildProxiedUrl(proxy, url);
+  const proxy = proxies[currentIndex];
+  const proxiedUrl = buildProxiedUrl(proxy, target);
+  setStatus(`Loading via ${proxy.name}...`);
+  frame.src = proxiedUrl;
 
-  status.textContent = `Loading with "${proxy.name}" ...`;
-  // set iframe src
-  frame.src = proxied;
-
-  // after a few seconds, check whether it loaded (best-effort)
+  // best-effort check after a short delay
   setTimeout(() => {
-    // We cannot reliably inspect cross-origin frames; check a few heuristics
     try {
-      // if same-origin we can inspect, otherwise this may throw
+      // trying to inspect cross-origin frame may throw; this is best-effort
       const doc = frame.contentDocument;
-      if (!doc || !doc.body) {
-        status.textContent = `Attempted: ${proxy.name}. If blank, the proxy or site blocked loading — try another proxy.`;
-        return;
-      }
-      const txt = doc.body.innerText || doc.body.textContent || '';
-      if (txt.trim().length === 0) {
-        status.textContent = `Attempted: ${proxy.name}. Frame loaded but appears empty; try another proxy.`;
+      if (!doc || !doc.body || doc.body.innerHTML.trim() === '') {
+        setStatus(`Tried ${proxy.name}. If the iframe is blank the proxy or target blocked framing — click "Try next proxy".`);
       } else {
-        status.textContent = `Loaded via ${proxy.name}.`;
+        setStatus(`Loaded via ${proxy.name}.`);
       }
     } catch (err) {
-      // cross-origin — we can't read, so assume loaded unless iframe is clearly blank
-      // try a lightweight check: if iframe's src didn't change or there was a network error, we'd still not know
-      status.textContent = `Request sent via ${proxy.name}. If the page is blank, that proxy/target blocked framing or failed — click "Try next proxy".`;
+      // cross-origin, assume request sent; user should see content if framing allowed
+      setStatus(`Request sent via ${proxy.name}. If blank, that proxy/target blocked framing — click "Try next proxy".`);
     }
   }, 3500);
 }
 
+// try next proxy in list
 function tryNextProxy() {
-  // advance index and load
-  currentIndex = (currentIndex + 1) % validProxies.length;
+  playClick();
+  currentIndex = (currentIndex + 1) % proxies.length;
   select.selectedIndex = currentIndex;
   loadProxy();
 }
 
+// open raw target (no proxy)
 function openTarget() {
-  // open the raw target in a new tab (no proxy)
+  playClick();
   let url = urlInput.value.trim();
   if (!url) return alert('Enter a URL first.');
-  if (!url.match(/^https?:\/\//)) url = 'https://' + url;
+  if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
   window.open(url, '_blank');
 }
 
-// convenience: when user presses Enter in input, load
-urlInput.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') {
-    loadProxy();
-  }
+// open the seasaw site you requested in a new tab
+document.getElementById('seesawBtn').addEventListener('click', () => {
+  playClick();
+  window.open('https://ajxanman-beep.github.io/seasaw/index.html', '_blank');
 });
 
-// improve UX: if select changed, update currentIndex
+// button wiring and keyboard shortcut
+document.getElementById('loadBtn').addEventListener('click', loadProxy);
+document.getElementById('nextBtn').addEventListener('click', tryNextProxy);
+document.getElementById('openBtn').addEventListener('click', openTarget);
+
+urlInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') loadProxy();
+});
+
+// when user changes select update index
 select.addEventListener('change', () => {
   currentIndex = parseInt(select.value, 10) || 0;
 });
 
-// initial status
-status.textContent = 'Ready. Select a proxy and click Load.';
+// small UX text
+setStatus('Ready. Select a proxy and click Load.');
 
 </script>
 </body>
