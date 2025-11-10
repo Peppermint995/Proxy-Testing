@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Proxy-Testing</title>
 <style>
-  body { font-family: Arial, sans-serif; padding: 20px; background: #f9f9f9; }
+  body { font-family: Arial, sans-serif; padding: 20px; background: #000000; }
   input { width: 60%; padding: 8px; }
   select, button { padding: 8px 12px; margin-left: 5px; }
   iframe { width: 100%; height: 600px; border: 1px solid #ccc; margin-top: 20px; }
@@ -13,7 +13,7 @@
 </style>
 </head>
 <body>
-<h2>Multi-Proxy HTML Viewer</h2>
+<h2>Proxy Tester</h2>
 <p>Enter a URL and select a proxy:</p>
 <input id="url" placeholder="https://example.com">
 <select id="proxySelect">
@@ -21,6 +21,8 @@
   <option value="https://thingproxy.freeboard.io/fetch/">ThingProxy</option>
   <option value="https://api.codetabs.com/v1/proxy?quest=">CodeTabs</option>
   <option value="https://corsproxy.io/?">CorsProxy.io</option>
+  <option value="https://go.x2u.in/proxy?">X2u.in</option>
+  <option value= "https://cors‑proxy.htmldriven.com/?">Html driven Cors</option>
 </select>
 <button onclick="loadProxy()">Load</button>
 <div id="status"></div>
@@ -45,9 +47,9 @@ function loadProxy() {
   // Show fallback after 5 seconds if iframe is blank
   setTimeout(() => {
     if(frame.contentDocument && frame.contentDocument.body.innerHTML.trim() === '') {
-      status.textContent = 'Failed to load. Try a different proxy.';
+      status.textContent = 'Oops, try another proxy';
     } else {
-      status.textContent = 'Loaded successfully via selected proxy.';
+      status.textContent = 'Loaded successfully';
     }
   }, 5000);
 }
