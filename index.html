@@ -1,74 +1,250 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Proxy-Testing</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Proxy Testing For My Freind Alex</title>
 <style>
-  body { 
-    font-family: Arial, sans-serif; 
-    padding: 20px; 
-    /* Initial background */
-    background: #000000;
-    /* Apply animation */
-    animation: bgColorChange 30s infinite alternate;
+  :root{
+    --fg: #ffffff;
+    --muted: rgba(255,255,255,0.8);
+    --card-bg: rgba(0,0,0,0.25);
   }
 
-  @keyframes bgColorChange {
-    0% { background-color: #000000; }
-    25% { background-color: #1a1a2e; }
-    50% { background-color: #162447; }
-    75% { background-color: #1f4068; }
-    100% { background-color: #e43f5a; }
+  html,body {
+    height: 100%;
+    margin: 0;
   }
 
-  input { width: 60%; padding: 8px; }
-  select, button { padding: 8px 12px; margin-left: 5px; }
-  iframe { width: 100%; height: 600px; border: 1px solid #ccc; margin-top: 20px; }
-  #status { margin-top: 10px; font-size: 90%; color: #fff; }
+  /* rainbow animated background using CSS gradients */
+  body {
+    font-family: Arial, sans-serif;
+    color: var(--fg);
+    padding: 28px;
+    /* make a large multi-stop gradient and animate its position */
+    background: linear-gradient(120deg,
+      #ff004d 0%,
+      #ff7300 12.5%,
+      #ffee00 25%,
+      #33ff00 37.5%,
+      #00ffd5 50%,
+      #0066ff 62.5%,
+      #6a00ff 75%,
+      #ff00c8 87.5%,
+      #ff004d 100%);
+    background-size: 200% 200%;
+    animation: rainbowShift 40s linear infinite;
+  }
+
+  @keyframes rainbowShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  /* page card */
+  .card {
+    background: var(--card-bg);
+    padding: 18px;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+    max-width: 1100px;
+    margin: 0 auto;
+    backdrop-filter: blur(6px);
+  }
+
+  h2 { margin: 0 0 8px 0; font-size: 1.4rem; }
+  p { margin: 6px 0 16px 0; color: var(--muted); }
+
+  .controls {
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    align-items:center;
+  }
+
+  input#url { flex:1 1 60%; min-width:240px; padding:8px 10px; border-radius:6px; border:1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.02); color:var(--fg); }
+  select, button {
+    padding:8px 12px;
+    border-radius:6px;
+    border:1px solid rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.04);
+    color:var(--fg);
+    cursor:pointer;
+  }
+
+  button:active { transform: translateY(1px); }
+  button.secondary { background: transparent; border:1px dashed rgba(255,255,255,0.12); }
+
+  #status { margin-top:12px; font-size:0.95rem; color:var(--muted); min-height:1.2em; }
+
+  iframe {
+    width: 100%;
+    height: 620px;
+    border-radius:8px;
+    border: 1px solid rgba(255,255,255,0.12);
+    margin-top: 16px;
+    background: white;
+  }
+
+  footer { margin-top:12px; font-size:0.85rem; color:var(--muted); text-align:right; }
+
+  @media (max-width:700px){
+    input#url { flex-basis:100%; }
+    .controls { gap:6px; }
+  }
 </style>
 </head>
 <body>
-<h2>Proxy Tester</h2>
-<p>Enter a URL and select a proxy:</p>
-<input id="url" placeholder="https://example.com">
-<select id="proxySelect">
-  <option value="https://api.allorigins.win/raw?url=">AllOrigins</option>
-  <option value="https://thingproxy.freeboard.io/fetch/">ThingProxy</option>
-  <option value="https://api.codetabs.com/v1/proxy?quest=">CodeTabs</option>
-  <option value="https://corsproxy.io/?">CorsProxy.io</option>
-  <option value="https://go.x2u.in/proxy?">X2u.in</option>
-  <option value="https://cors‑proxy.htmldriven.com/?">Html driven Cors</option>
-</select>
-<button onclick="loadProxy()">Load</button>
-<div id="status"></div>
-<iframe id="frame"></iframe>
+  <div class="card">
+    <h2>Proxy Testing For My Freind Alex</h2>
+    <p>Enter any URL and choose a proxy. Use these for development/testing only — public proxies are flaky and may log requests.</p>
+
+    <div class="controls">
+      <input id="url" placeholder="https://example.com" spellcheck="false" autocapitalize="none" />
+      <select id="proxySelect" title="Select proxy"></select>
+      <button id="loadBtn">Load</button>
+      <button id="nextBtn" class="secondary" title="Try next proxy">Try next proxy</button>
+      <button id="openBtn" class="secondary" title="Open raw target in new tab (no proxy)">Open target</button>
+    </div>
+
+    <div id="status">Ready.</div>
+
+    <iframe id="frame" sandbox="allow-scripts allow-forms allow-same-origin"></iframe>
+
+    <footer>Public proxies: test only • If a proxy fails, click <em>Try next proxy</em>.</footer>
+  </div>
 
 <script>
-function loadProxy() {
-  const url = document.getElementById('url').value.trim();
-  const proxy = document.getElementById('proxySelect').value;
-  const status = document.getElementById('status');
-  const frame = document.getElementById('frame');
+/*
+  Proxy list: each entry is {name, url, type}
+  type === 'encode' => proxy expects encoded URL appended (eg ?url=ENCODED)
+  type === 'prefix' => proxy is a simple prefix that should be followed by the raw URL (no double-encoding)
+  Note: Availability changes — these are common dev proxies.
+*/
+const proxies = [
+  { name: 'AllOrigins (raw)', url: 'https://api.allorigins.win/raw?url=', type: 'encode' },
+  { name: 'CORS.lol', url: 'https://api.cors.lol/?url=', type: 'encode' },
+  { name: 'CodeTabs (quest)', url: 'https://api.codetabs.com/v1/proxy?quest=', type: 'encode' },
+  { name: 'CorsProxy.io', url: 'https://corsproxy.io/?', type: 'encode' },
+  { name: 'CorsFix', url: 'https://proxy.corsfix.com/?', type: 'encode' },
+  { name: 'ThingProxy', url: 'https://thingproxy.freeboard.io/fetch/', type: 'prefix' },
+  { name: 'Bridged CORS (bridged.cc)', url: 'https://cors.bridged.cc/', type: 'prefix' },
+  { name: 'Textise (html-to-text demo)', url: 'https://textise dot iitty??', type: 'encode' }, // placeholder removed if you want to add real
+  // Additional entries that sometimes work:
+  { name: 'HTMLDriven CORS', url: 'https://cors-proxy.htmldriven.com/?url=', type: 'encode' },
+  { name: 'CORS Anywhere (demo)', url: 'https://cors-anywhere.herokuapp.com/', type: 'prefix' } // many demo instances require enabling
+];
 
-  if(!url) return alert('Please enter a URL');
-  status.textContent = 'Loading via proxy...';
+// filter out entries that are clearly placeholders (we left a dummy above as an example); keep only valid-looking ones
+const validProxies = proxies.filter(p => p.url && !p.name.includes('placeholder'));
 
-  // Encode URL for safety
-  let fullUrl = proxy + encodeURIComponent(url);
+// populate the select
+const select = document.getElementById('proxySelect');
+validProxies.forEach((p, i) => {
+  const opt = document.createElement('option');
+  opt.value = i;
+  opt.textContent = p.name;
+  select.appendChild(opt);
+});
 
-  // Attempt to load
-  frame.src = fullUrl;
+let currentIndex = 0;
+select.selectedIndex = 0;
 
-  // Show fallback after 5 seconds if iframe is blank
-  setTimeout(() => {
-    if(frame.contentDocument && frame.contentDocument.body.innerHTML.trim() === '') {
-      status.textContent = 'Oops, try another proxy';
-    } else {
-      status.textContent = 'Loaded successfully';
-    }
-  }, 5000);
+const status = document.getElementById('status');
+const frame = document.getElementById('frame');
+const urlInput = document.getElementById('url');
+
+document.getElementById('loadBtn').addEventListener('click', loadProxy);
+document.getElementById('nextBtn').addEventListener('click', tryNextProxy);
+document.getElementById('openBtn').addEventListener('click', openTarget);
+
+function buildProxiedUrl(proxy, target) {
+  // proxy.type === 'encode' -> append encodeURIComponent(target)
+  // proxy.type === 'prefix' -> append raw target (but encode characters that break URL)
+  if (!target.match(/^https?:\/\//)) {
+    // ensure scheme
+    target = 'https://' + target;
+  }
+
+  if (proxy.type === 'encode') {
+    return proxy.url + encodeURIComponent(target);
+  } else {
+    // prefix type: we'll append the raw target but make sure it's not double-encoded
+    // replace spaces with %20 and keep rest intact
+    return proxy.url + target;
+  }
 }
+
+async function loadProxy() {
+  const url = urlInput.value.trim();
+  if (!url) {
+    alert('Please enter a URL (include https:// if possible).');
+    return;
+  }
+
+  currentIndex = parseInt(select.value, 10) || 0;
+  const proxy = validProxies[currentIndex];
+  const proxied = buildProxiedUrl(proxy, url);
+
+  status.textContent = `Loading with "${proxy.name}" ...`;
+  // set iframe src
+  frame.src = proxied;
+
+  // after a few seconds, check whether it loaded (best-effort)
+  setTimeout(() => {
+    // We cannot reliably inspect cross-origin frames; check a few heuristics
+    try {
+      // if same-origin we can inspect, otherwise this may throw
+      const doc = frame.contentDocument;
+      if (!doc || !doc.body) {
+        status.textContent = `Attempted: ${proxy.name}. If blank, the proxy or site blocked loading — try another proxy.`;
+        return;
+      }
+      const txt = doc.body.innerText || doc.body.textContent || '';
+      if (txt.trim().length === 0) {
+        status.textContent = `Attempted: ${proxy.name}. Frame loaded but appears empty; try another proxy.`;
+      } else {
+        status.textContent = `Loaded via ${proxy.name}.`;
+      }
+    } catch (err) {
+      // cross-origin — we can't read, so assume loaded unless iframe is clearly blank
+      // try a lightweight check: if iframe's src didn't change or there was a network error, we'd still not know
+      status.textContent = `Request sent via ${proxy.name}. If the page is blank, that proxy/target blocked framing or failed — click "Try next proxy".`;
+    }
+  }, 3500);
+}
+
+function tryNextProxy() {
+  // advance index and load
+  currentIndex = (currentIndex + 1) % validProxies.length;
+  select.selectedIndex = currentIndex;
+  loadProxy();
+}
+
+function openTarget() {
+  // open the raw target in a new tab (no proxy)
+  let url = urlInput.value.trim();
+  if (!url) return alert('Enter a URL first.');
+  if (!url.match(/^https?:\/\//)) url = 'https://' + url;
+  window.open(url, '_blank');
+}
+
+// convenience: when user presses Enter in input, load
+urlInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    loadProxy();
+  }
+});
+
+// improve UX: if select changed, update currentIndex
+select.addEventListener('change', () => {
+  currentIndex = parseInt(select.value, 10) || 0;
+});
+
+// initial status
+status.textContent = 'Ready. Select a proxy and click Load.';
+
 </script>
 </body>
 </html>
